@@ -5,5 +5,6 @@ export class UpdateVenueDto extends PartialType(CreateVenueDto) {
   id: number;
   address: string;
   name: string;
-  description: boolean;
+  description: string;
+  capacity: number;
 }

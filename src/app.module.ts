@@ -2,13 +2,19 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { VenuesModule } from './venues/venues.module';
 import { join } from 'path';
+import { UsersModule } from './users/users.module';
+import { CompaniesModule } from './companies/companies.module';
+import { TicketsModule } from './tickets/tickets.module';
+import { EventsModule } from './events/events.module';
+import { TicketreturnsModule } from './ticketreturns/ticketreturns.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({envFilePath: ['.env', '.env.example']}),
+    ConfigModule.forRoot({ envFilePath: ['.env', '.env.example'] }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -22,8 +28,14 @@ import { join } from 'path';
         entities: [join(__dirname, '**', '*.entity.{ts,js}')],
         synchronize: true, //should be false at production!
       }),
-        }),
+    }),
     VenuesModule,
+    UsersModule,
+    CompaniesModule,
+    TicketsModule,
+    EventsModule,
+    TicketreturnsModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,19 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Venue {
+export class Company {
   @PrimaryGeneratedColumn()
   public id: number;
 
   @Column()
   public name: string;
-
-  @Column()
-  public address: string;
-
-  @Column()
-  public description: string;
-
-  @Column()
-  public capacity: number;
 }

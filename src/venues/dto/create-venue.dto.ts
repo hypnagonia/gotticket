@@ -1,5 +1,6 @@
 export class CreateVenueDto {
   address: string;
   name: string;
-  description: boolean;
+  description: string;
+  capacity: number;
 }
