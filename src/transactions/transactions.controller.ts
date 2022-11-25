@@ -6,10 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
+  Res,
+  Header
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -25,9 +29,17 @@ export class TransactionsController {
     return this.transactionsService.findAll();
   }
 
+  @Header('Content-Type', 'image/svg+xml')
+  @Get('image/:id')
+  async findOneImage(@Param('id') id: string, @Res() response: Response) {
+    const qr = await this.transactionsService.findOneImage(id);
+    qr.pipe(response)
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.transactionsService.findOne(+id);
+    console.log('got')
+    return this.transactionsService.findOne(id);
   }
 
   @Patch(':id')

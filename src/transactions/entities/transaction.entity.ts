@@ -25,14 +25,11 @@ import { User } from '../../users/entities/user.entity';
 import { Ticket } from '../../tickets/entities/ticket.entity';
 
 /*
-
 {
-"email": "hgonia@gmail.com",
-"name": "some name",
-"phone": "+971504252550"
+"ticket": 45
 }
-
 */
+
 export enum TransactionTicketStatus {
   ISSUED = 'issued',
   USED = 'used',
@@ -44,6 +41,7 @@ export class Transaction {
   @PrimaryGeneratedColumn()
   public id: number;
 
+  // need a second number as get parameter
   @Column()
   number: string;
 
@@ -60,11 +58,9 @@ export class Transaction {
   })
   status: TransactionTicketStatus;
 
-  // onetoone ticket
-
   @ManyToOne(() => User, (user) => user.transactions)
   user: User;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.transactions)
+  @ManyToOne(() => Ticket, (ticket) => ticket.transactions, { nullable: false })
   ticket: Ticket;
 }
