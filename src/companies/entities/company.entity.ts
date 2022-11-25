@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { Event } from '../../events/entities/event.entity';
 
 @Entity()
 export class Company {
@@ -7,4 +14,10 @@ export class Company {
 
   @Column()
   public name: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @OneToMany(() => Event, (event) => event.company)
+  events: Event[];
 }
