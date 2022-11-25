@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Company } from '../../companies/entities/company.entity';
 import { Venue } from '../../venues/entities/venue.entity';
@@ -22,6 +23,12 @@ import { Ticket } from '../../tickets/entities/ticket.entity';
 "eventDate": "2022-11-25T12:53:04.915Z"
 }
 */
+
+export enum EventStatus {
+  OPEN = 'open',
+  CANCELED = 'canceled',
+  CLOSED = 'closed',
+}
 
 @Entity()
 export class Event {
@@ -43,18 +50,32 @@ export class Event {
   @Column({ type: 'timestamptz' })
   eventDate: Date;
 
+  @Column({
+    type: 'enum',
+    enum: EventStatus,
+    default: EventStatus.OPEN,
+  })
+  status: EventStatus;
+
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => Company, (company) => company.events)
+  @ManyToOne(() => Company, (company) => company.events, {
+    nullable: false,
+    eager: true,
+  })
   company: Company;
 
-  @ManyToOne(() => Venue, (venue) => venue.events)
+  @ManyToOne(() => Venue, (venue) => venue.events, {
+    nullable: false,
+    eager: true,
+  })
+  // @JoinColumn({ name: 'venueId' })
   venue: Venue;
 
   @OneToMany(() => User, (user) => user.company)
   users: User[];
 
-  @OneToMany(() => Ticket, (ticket) => ticket.event)
+  @OneToMany(() => Ticket, (ticket) => ticket.event, { eager: true })
   tickets: Ticket[];
 }

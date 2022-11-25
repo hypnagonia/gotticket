@@ -6,20 +6,27 @@ import { Event } from './entities/event.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Venue } from '../venues/entities/venue.entity';
 
 @Injectable()
 export class EventsService {
-  constructor(@InjectRepository(Event) private repository: Repository<Event>) {}
+  constructor(
+    @InjectRepository(Event) private repository: Repository<Event>,
+    @InjectRepository(Venue) private venueRepository: Repository<Venue>,
+  ) {}
 
   async create(createDto: CreateEventDto) {
+    // get company from session
     const o = await this.repository.create(createDto);
     await this.repository.save(o);
     return o;
   }
 
   // TODO all find all pagination
-  findAll() {
-    return this.repository.find();
+  async findAll() {
+    const o = await this.repository.find();
+
+    return o;
   }
 
   async findOne(id: number) {

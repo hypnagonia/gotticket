@@ -24,17 +24,13 @@ import { Transaction } from '../../transactions/entities/transaction.entity';
 /*
 
 {
-"email": "hgonia@gmail.com",
-"name": "some name",
-"phone": "+971504252550"
+"count": 100,
+"name": "normal tickets",
+"phone": "+971504252550",
+"event": 3
 }
 
 */
-export enum TicketStatus {
-  ISSUED = 'issued',
-  USED = 'used',
-  RETURNED = 'returned',
-}
 
 // types of tickets
 @Entity()
@@ -50,7 +46,7 @@ export class Ticket {
   @Column()
   count: number;
 
-  @ManyToOne(() => Event, (event) => event.tickets)
+  @ManyToOne(() => Event, (event) => event.tickets, { nullable: false })
   event: Event;
 
   @OneToMany(() => Transaction, (transaction) => transaction.ticket)
