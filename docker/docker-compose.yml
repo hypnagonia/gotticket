@@ -10,7 +10,7 @@ services:
       - app
     restart: always
   app-db:
-    image: "postgres:13.3"
+    image: "healthcheck/postgres"
     env_file: ./config/postgres_app.env
     volumes:
       - "../db/app:/var/lib/postgresql/data"
