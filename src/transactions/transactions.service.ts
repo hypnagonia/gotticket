@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as qr from "qr-image"
 import { HttpException, HttpStatus } from '@nestjs/common';
+import {generateTicketNumberEmail, sendEmail} from '../utils/sendEmail'
 
 @Injectable()
 export class TransactionsService {
@@ -19,10 +20,12 @@ export class TransactionsService {
 
     // @ts-ignore
     const number = '' + createDto.ticket + generate(0)
-    console.log({number, createDto})
 
     const o = await this.repository.create({...createDto, number});
     await this.repository.save(o);
+
+    const mail = generateTicketNumberEmail(number)
+    sendEmail(mail)
     return o;
   }
 

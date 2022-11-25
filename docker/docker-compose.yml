@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    links:
+      - app
+    depends_on:
+      - app
+    restart: always
+  app-db:
+    image: "healthcheck/postgres"
+    env_file: ./config/postgres_app.env
+    volumes:
+      - "../db/app:/var/lib/postgresql/data"
+    restart: always
+  app:
+    build: ../
+    depends_on:
+      - app-db
+    links:
+      - app-db
+    env_file:
+        - ./config/postgres_app.env
+        - ./config/app.env
+    restart: always
