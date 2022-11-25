@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Company } from '../../companies/entities/company.entity';
 import { Venue } from '../../venues/entities/venue.entity';
+import { User } from '../../users/entities/user.entity';
+import { Ticket } from '../../tickets/entities/ticket.entity';
 
 /*
 {
@@ -48,4 +51,10 @@ export class Event {
 
   @ManyToOne(() => Venue, (venue) => venue.events)
   venue: Venue;
+
+  @OneToMany(() => User, (user) => user.company)
+  users: User[];
+
+  @OneToMany(() => Ticket, (ticket) => ticket.event)
+  tickets: Ticket[];
 }

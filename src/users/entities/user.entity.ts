@@ -3,6 +3,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import {
   Contains,
@@ -15,13 +17,16 @@ import {
   Max,
   IsMobilePhone,
 } from 'class-validator';
+import { Company } from '../../companies/entities/company.entity';
+import { Event } from '../../events/entities/event.entity';
+import { Transaction } from '../../transactions/entities/transaction.entity';
 
 /*
 
 {
-email: "hgonia@gmail.com",
-name: "some name",
-phone: "+971504252550"
+"email": "hgonia@gmail.com",
+"name": "some name",
+"phone": "+971504252550"
 }
 
 */
@@ -57,4 +62,14 @@ export class User {
     default: UserRole.VISITOR,
   })
   role: UserRole;
+
+  @ManyToOne(() => Company, (company) => company.users)
+  company: Company;
+
+  //??
+  @OneToMany(() => Event, (event) => event.company)
+  events: Event[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transactions: Transaction[];
 }
