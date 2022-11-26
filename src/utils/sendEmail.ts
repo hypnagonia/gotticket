@@ -9,9 +9,7 @@ export const generateTicketNumberEmail = (email: string, number: string) => {
     text: `Your Ticket Number is ${number}`, // plain text body
     html: `<b>Your Ticket Number is ${number}</b>
     <div style="width: 200px; height: 200px; margin-top:50px">
-    <img src="${url}/transactions/image/${number}"
-    style="width:100%;height:100%"
-    />
+    <img crossorigin alt="QR Code" src="${url}/transactions/image/${number}" style="width:100%;height:100%"/>
     </div>
     <a href="${url}/transactions/image/${number}">Click here if you do not see QR code</a><br/>
     Or copy this url manually:<br/>

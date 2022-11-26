@@ -19,10 +19,12 @@ export class CompaniesService {
   }
 
   findAll() {
+    // anyone
     return this.repository.find();
   }
 
   async findOne(id: number) {
+    // anyone
     const o = await this.repository.findOne({ where: { id } });
     if (o) {
       return o;
@@ -32,6 +34,7 @@ export class CompaniesService {
   }
 
   async update(id: number, updateDto: UpdateCompanyDto) {
+    // only admin not needed ?
     await this.repository.update(id, updateDto);
     const o = await this.repository.findOne({ where: { id } });
     if (o) {
@@ -42,6 +45,7 @@ export class CompaniesService {
   }
 
   async remove(id: number) {
+    // only admin not needed
     const o = await this.repository.delete(id);
     if (!o.affected) {
       throw new HttpException('record not found', HttpStatus.NOT_FOUND);

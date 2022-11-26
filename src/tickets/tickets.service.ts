@@ -21,12 +21,14 @@ export class TicketsService {
   }
 
   async findAll() {
+    // only company
     const o = await this.repository.find();
 
     return o;
   }
 
   async findOne(id: number) {
+    // only company
     const o = await this.repository.findOne({ where: { id } });
     if (o) {
       return o;
@@ -36,6 +38,7 @@ export class TicketsService {
   }
 
   async update(id: number, updateDto: UpdateTicketDto) {
+    // only company
     // change count only
     await this.repository.update(id, updateDto);
     const o = await this.repository.findOne({ where: { id } });

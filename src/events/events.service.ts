@@ -24,12 +24,14 @@ export class EventsService {
 
   // TODO all find all pagination
   async findAll() {
+    // anyone
     const o = await this.repository.find();
 
     return o;
   }
 
   async findOne(id: number) {
+    // anyone
     const o = await this.repository.findOne({ where: { id } });
     if (o) {
       return o;
@@ -39,6 +41,8 @@ export class EventsService {
   }
 
   async update(id: number, updateDto: UpdateEventDto) {
+    // only company
+    // event update flow?
     await this.repository.update(id, updateDto);
     const o = await this.repository.findOne({ where: { id } });
     if (o) {

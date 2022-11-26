@@ -13,16 +13,19 @@ export class VenuesService {
   ) {}
 
   async create(createVenueDto: CreateVenueDto) {
+    // only admin
     const newVenue = await this.venueRepository.create(createVenueDto);
     await this.venueRepository.save(newVenue);
     return newVenue;
   }
 
   findAll() {
+    // only admin
     return this.venueRepository.find();
   }
 
   async findOne(id: number) {
+    // only admin
     const venue = await this.venueRepository.findOne({ where: { id } });
     if (venue) {
       return venue;
@@ -32,6 +35,7 @@ export class VenuesService {
   }
 
   async update(id: number, updateVenueDto: UpdateVenueDto) {
+    // only admin
     await this.venueRepository.update(id, updateVenueDto);
     const venue = await this.venueRepository.findOne({ where: { id } });
     if (venue) {
@@ -42,6 +46,7 @@ export class VenuesService {
   }
 
   async remove(id: number) {
+    // only admin
     const venue = await this.venueRepository.delete(id);
     if (!venue.affected) {
       throw new HttpException('venue not found', HttpStatus.NOT_FOUND);

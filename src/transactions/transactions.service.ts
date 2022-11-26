@@ -37,8 +37,8 @@ export class TransactionsService {
   }
 
   async createManyAndEmail(createDto: CreateTransactionBatchDto) {
-    console.log({ createDto });
     // todo
+    // only company role
 
     // @ts-ignore
     if (!createDto || !createDto.emails || !createDto.emails.length) {
@@ -80,7 +80,8 @@ export class TransactionsService {
   }
 
   async findAllByTickedID(ticketId: number) {
-    // todo remove
+    // todo optimize query
+    // only company
     const o = await this.repository.find({
       where: { ticket: { id: ticketId } },
     });
@@ -89,6 +90,7 @@ export class TransactionsService {
   }
 
   async findOneImage(id: string) {
+    // anyone
     const o = await this.repository.findOne({ where: { number: id } });
     if (o) {
       // const frontendURL = process.env.FRONTEND_URL
@@ -105,7 +107,6 @@ export class TransactionsService {
   async findOne(id: string) {
     const o = await this.repository.findOne({ where: { number: id } });
     if (o) {
-      console.log({ o });
       return o;
     }
 
@@ -116,7 +117,10 @@ export class TransactionsService {
     return `This action updates a #${id} transaction`;
   }
 
+  // todo better use number instead of id
   async useTicket(id: number, updateTransactionDto: UpdateTransactionDto) {
+    // only manager of company
+
     const current = await this.repository.findOne({ where: { id } });
 
     if (!current || !current.id) {
@@ -126,8 +130,6 @@ export class TransactionsService {
     if (current.status !== TransactionTicketStatus.ISSUED) {
       throw new HttpException('already used', HttpStatus.NOT_FOUND);
     }
-
-    console.log({current})
 
     // must be manager of issuer company
     // status must be Issued

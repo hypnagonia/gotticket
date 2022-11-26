@@ -58,7 +58,6 @@ export class TransactionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log('got');
     return this.transactionsService.findOne(id);
   }
 
