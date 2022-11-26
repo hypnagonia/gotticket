@@ -79,10 +79,10 @@ export class TransactionsService {
     return o;
   }
 
-  async findAllUsedByTickedID(ticketId: number) {
+  async findAllByTickedID(ticketId: number) {
     // todo remove
     const o = await this.repository.find({
-      where: { status: TransactionTicketStatus.USED, ticket: { id: ticketId } },
+      where: { ticket: { id: ticketId } },
     });
 
     return o;
@@ -119,13 +119,15 @@ export class TransactionsService {
   async useTicket(id: number, updateTransactionDto: UpdateTransactionDto) {
     const current = await this.repository.findOne({ where: { id } });
 
-    if (!current) {
+    if (!current || !current.id) {
       throw new HttpException('record not found', HttpStatus.NOT_FOUND);
     }
 
     if (current.status !== TransactionTicketStatus.ISSUED) {
       throw new HttpException('already used', HttpStatus.NOT_FOUND);
     }
+
+    console.log({current})
 
     // must be manager of issuer company
     // status must be Issued

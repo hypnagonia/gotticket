@@ -44,9 +44,9 @@ export class TransactionsController {
     return this.transactionsService.findAll();
   }
 
-  @Get(':tickedId/used')
-  findAllUsedByTickedID(@Param('tickedId') id: string) {
-    return this.transactionsService.findAllUsedByTickedID(+id);
+  @Get('ticket/:tickedId')
+  findAllyTickedID(@Param('tickedId') id: string) {
+    return this.transactionsService.findAllByTickedID(+id);
   }
 
   @Header('Content-Type', 'image/svg+xml')
