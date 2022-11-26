@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 
 
 export const generateTicketNumberEmail = (number: string) => {
+  const url = process.env.BACKEND_URL
   const mail = {
     from: 'jenya.nepoimannykh@gmail.com', // sender address
     to: "hypnagonia@gmail.com", // list of receivers
@@ -9,7 +10,7 @@ export const generateTicketNumberEmail = (number: string) => {
     text: `Your Ticket Number is ${number}`, // plain text body
     html: `<b>Your Ticket Number is ${number}</b>
     <div style="width: 200px; height: 200px; margin-top:50px">
-    <img src="http://localhost:3001/transactions/image/${number}"
+    <img src="${url}/transactions/image/${number}"
     style="width:100%;height:100%"
     />
     </div>
