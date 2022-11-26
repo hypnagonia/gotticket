@@ -11,7 +11,7 @@ import { TicketsModule } from './tickets/tickets.module';
 import { EventsModule } from './events/events.module';
 import { TicketreturnsModule } from './ticketreturns/ticketreturns.module';
 import { TransactionsModule } from './transactions/transactions.module';
-import * as auth from './auth'
+import {AuthModule} from './auth/auth.module'
 
 @Module({
   imports: [
@@ -40,6 +40,7 @@ import * as auth from './auth'
     EventsModule,
     TicketreturnsModule,
     TransactionsModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

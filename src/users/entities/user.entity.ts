@@ -25,8 +25,9 @@ import { Role } from '../../auth/roles'
 
 {
 "email": "hgonia@gmail.com",
-"name": "some name",
-"phone": "+971504252550"
+"name": "j",
+"phone": "+971504252550",
+"password": "123"
 }
 
 */
@@ -42,6 +43,9 @@ export class User {
 
   @Column()
   name: string;
+
+  @Column()
+  password: string;
 
   @Column()
   @IsMobilePhone()
