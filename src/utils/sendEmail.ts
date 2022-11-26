@@ -3,11 +3,17 @@ const nodemailer = require("nodemailer");
 
 export const generateTicketNumberEmail = (number: string) => {
   const mail = {
-    from: 'Got Ticket', // sender address
+    from: 'jenya.nepoimannykh@gmail.com', // sender address
     to: "hypnagonia@gmail.com", // list of receivers
-    subject: "Your Ticket Number", // Subject line
+    subject: "Your Ticket From Gotticket", // Subject line
     text: `Your Ticket Number is ${number}`, // plain text body
-    html: `<b>Your Ticket Number is ${number}</b>`, // html body
+    html: `<b>Your Ticket Number is ${number}</b>
+    <div style="width: 200px; height: 200px; margin-top:50px">
+    <img src="http://localhost:3001/transactions/image/${number}"
+    style="width:100%;height:100%"
+    />
+    </div>
+    `, // html body
   }
 
   return mail
@@ -20,13 +26,15 @@ export async function sendEmail(mail: any) {
   let testAccount = await nodemailer.createTestAccount();
 
   // create reusable transporter object using the default SMTP transport
+
+  console.log(process.env.EMAIL_LOGIN)
+  console.log(process.env.EMAL_P)
   let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    service: 'gmail',
+    host: "smtp.gmail.com",
     auth: {
-      user: 'leonor.herzog@ethereal.email', // generated ethereal user
-      pass: 'Y8kBnjcF2Qa8XJuTcr', // generated ethereal password
+      user: process.env.EMAIL_LOGIN, // generated ethereal user
+      pass: process.env.EMAL_P, // generated ethereal password
     },
   });
 
