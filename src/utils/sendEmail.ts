@@ -34,7 +34,7 @@ export async function sendEmail(mail: any) {
     host: "smtp.gmail.com",
     auth: {
       user: process.env.EMAIL_LOGIN, // generated ethereal user
-      pass: process.env.EMAL_P, // generated ethereal password
+      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
     },
   });
 
