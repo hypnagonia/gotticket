@@ -13,6 +13,7 @@ export const generateTicketNumberEmail = (number: string) => {
     <img src="${url}/transactions/image/${number}"
     style="width:100%;height:100%"
     />
+    <a href="${url}/transactions/image/${number}">Click here if you do not see QR code</a>
     </div>
     `, // html body
   }
