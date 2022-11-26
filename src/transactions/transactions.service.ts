@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { CreateTransactionDto, CreateTransactionBatchDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { Transaction } from './entities/transaction.entity';
 import {generate} from '../utils/generate'
@@ -21,6 +21,7 @@ export class TransactionsService {
     // get company from session
 
     // @ts-ignore
+    /*
     const number = '' + createDto.ticket + generate(0)
 
     const o = await this.repository.create({...createDto, number});
@@ -29,6 +30,41 @@ export class TransactionsService {
     const mail = generateTicketNumberEmail(number)
     sendEmail(mail)
     return o;
+    */
+  }
+
+  async createManyAndEmail(createDto: CreateTransactionBatchDto) {
+    console.log({createDto})
+    // todo
+
+    // @ts-ignore
+    if (!createDto || !createDto.emails || !createDto.emails.length) {
+      throw new HttpException('emails should be an array', HttpStatus.NOT_FOUND);
+    }
+
+   // @ts-ignore
+   const emails = createDto.emails
+   const response = []
+   const dto = {...createDto }
+
+   // @ts-ignore
+   delete dto.emails
+
+   for (const email of emails) {
+      // @ts-ignore
+      const number = '' + createDto.ticket + generate(0)
+
+      const o = await this.repository.create({...dto, number});
+
+
+      await this.repository.save(o);
+
+      const mail = generateTicketNumberEmail(email, number);
+      sendEmail(mail);
+      response.push(o)
+    }
+
+    return response;
   }
 
   async findAll() {

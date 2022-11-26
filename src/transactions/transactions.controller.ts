@@ -11,7 +11,7 @@ import {
   Header
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { CreateTransactionDto, CreateTransactionBatchDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -22,6 +22,18 @@ export class TransactionsController {
   @Post()
   create(@Body() createTransactionDto: CreateTransactionDto) {
     return this.transactionsService.create(createTransactionDto);
+  }
+
+  /*
+  {
+"ticket": 1,
+"emails": ["hypnagonia@gmail.com"]
+}
+  */
+
+  @Post('batch')
+  createManyAndEmail(@Body() createDto: CreateTransactionBatchDto) {
+    return this.transactionsService.createManyAndEmail(createDto);
   }
 
   @Get()

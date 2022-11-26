@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
 
 
-export const generateTicketNumberEmail = (number: string) => {
+export const generateTicketNumberEmail = (email: string, number: string) => {
   const url = process.env.BACKEND_URL
   const mail = {
     from: 'jenya.nepoimannykh@gmail.com', // sender address
-    to: "hypnagonia@gmail.com", // list of receivers
+    to: email, // list of receivers
     subject: "Your Ticket From Gotticket", // Subject line
     text: `Your Ticket Number is ${number}`, // plain text body
     html: `<b>Your Ticket Number is ${number}</b>
@@ -30,9 +30,6 @@ export async function sendEmail(mail: any) {
   let testAccount = await nodemailer.createTestAccount();
 
   // create reusable transporter object using the default SMTP transport
-
-  console.log(process.env.EMAIL_LOGIN)
-  console.log(process.env.EMAL_P)
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     host: "smtp.gmail.com",
@@ -44,10 +41,10 @@ export async function sendEmail(mail: any) {
 
   // send mail with defined transport object
   let info = await transporter.sendMail(mail);
-  console.log("Message sent: %s", info.messageId);
+  // console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
   // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
