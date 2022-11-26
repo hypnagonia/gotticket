@@ -23,6 +23,7 @@ export class TransactionsService {
 
   async create(createDto: CreateTransactionDto) {
     // get company from session
+    // no more than ticket count
     // @ts-ignore
     /*
     const number = '' + createDto.ticket + generate(0)
@@ -39,6 +40,7 @@ export class TransactionsService {
   async createManyAndEmail(createDto: CreateTransactionBatchDto) {
     // todo
     // only company role
+    // no more than ticket count
 
     // @ts-ignore
     if (!createDto || !createDto.emails || !createDto.emails.length) {
@@ -97,6 +99,20 @@ export class TransactionsService {
       // const frontendScannerURL = `${frontendURL}/Scanner/`
 
       const code = qr.image(o.number, { type: 'svg' });
+      return code;
+    }
+
+    throw new HttpException('record not found', HttpStatus.NOT_FOUND);
+  }
+
+  async findOneImagePNG(id: string) {
+    // anyone
+    const o = await this.repository.findOne({ where: { number: id } });
+    if (o) {
+      // const frontendURL = process.env.FRONTEND_URL
+      // const frontendScannerURL = `${frontendURL}/Scanner/`
+
+      const code = qr.image(o.number, { type: 'png', size: 20 });
       return code;
     }
 

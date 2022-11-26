@@ -56,6 +56,13 @@ export class TransactionsController {
     qr.pipe(response);
   }
 
+  @Header('Content-Type', 'image/png+xml')
+  @Get('image/:id/png')
+  async findOneImagePNG(@Param('id') id: string, @Res() response: Response) {
+    const qr = await this.transactionsService.findOneImagePNG(id);
+    qr.pipe(response);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.transactionsService.findOne(id);

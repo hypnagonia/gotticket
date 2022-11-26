@@ -7,14 +7,17 @@ export const generateTicketNumberEmail = (email: string, number: string) => {
     to: email, // list of receivers
     subject: 'Your Ticket From Gotticket', // Subject line
     text: `Your Ticket Number is ${number}`, // plain text body
-    html: `<b>Your Ticket Number is ${number}</b>
-    <div style="width: 200px; height: 200px; margin-top:50px">
-    <img crossorigin alt="QR Code" src="${url}/transactions/image/${number}" style="width:100%;height:100%"/>
-    </div>
+    html: `<b>Your Ticket Number is ${number}</b><br/>
     <a href="${url}/transactions/image/${number}">Click here if you do not see QR code</a><br/>
     Or copy this url manually:<br/>
     ${url}/transactions/image/${number}
     `, // html body
+    attachments: [
+        {   // file on disk as an attachment
+            filename: 'QR-code.png',
+            path: `${url}/transactions/image/${number}/png` // stream this file
+        }
+      ]
   };
 
   return mail;
