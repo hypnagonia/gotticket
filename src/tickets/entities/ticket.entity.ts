@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import {
   Contains,
@@ -48,6 +49,13 @@ export class Ticket {
 
   // @Column()
   // price: number;
+
+  // what is special about this type of tickets
+  // @Column()
+  // description: number;
+
+  @Column()
+  eventId: string;
 
   @ManyToOne(() => Event, (event) => event.tickets, { nullable: false })
   event: Event;

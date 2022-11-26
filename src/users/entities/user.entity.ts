@@ -20,7 +20,7 @@ import {
 import { Company } from '../../companies/entities/company.entity';
 import { Event } from '../../events/entities/event.entity';
 import { Transaction } from '../../transactions/entities/transaction.entity';
-
+import { Role } from '../../auth/roles'
 /*
 
 {
@@ -30,12 +30,6 @@ import { Transaction } from '../../transactions/entities/transaction.entity';
 }
 
 */
-export enum UserRole {
-  ADMIN = 'admin',
-  CONDUCTOR = 'conductor',
-  COMPANY = 'company',
-  VISITOR = 'visitor',
-}
 
 @Entity()
 export class User {
@@ -58,10 +52,10 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: UserRole,
-    default: UserRole.VISITOR,
+    enum: Role,
+    default: Role.VISITOR,
   })
-  role: UserRole;
+  role: Role;
 
   @ManyToOne(() => Company, (company) => company.users)
   company: Company;

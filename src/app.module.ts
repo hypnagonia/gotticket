@@ -11,6 +11,7 @@ import { TicketsModule } from './tickets/tickets.module';
 import { EventsModule } from './events/events.module';
 import { TicketreturnsModule } from './ticketreturns/ticketreturns.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import * as auth from './auth'
 
 @Module({
   imports: [
