@@ -1,12 +1,11 @@
-const nodemailer = require("nodemailer");
-
+const nodemailer = require('nodemailer');
 
 export const generateTicketNumberEmail = (email: string, number: string) => {
-  const url = process.env.BACKEND_URL
+  const url = process.env.BACKEND_URL;
   const mail = {
     from: 'jenya.nepoimannykh@gmail.com', // sender address
     to: email, // list of receivers
-    subject: "Your Ticket From Gotticket", // Subject line
+    subject: 'Your Ticket From Gotticket', // Subject line
     text: `Your Ticket Number is ${number}`, // plain text body
     html: `<b>Your Ticket Number is ${number}</b>
     <div style="width: 200px; height: 200px; margin-top:50px">
@@ -18,10 +17,10 @@ export const generateTicketNumberEmail = (email: string, number: string) => {
     Or copy this url manually:<br/>
     ${url}/transactions/image/${number}
     `, // html body
-  }
+  };
 
-  return mail
-}
+  return mail;
+};
 
 // async..await is not allowed in global scope, must use a wrapper
 export async function sendEmail(mail: any) {
@@ -32,7 +31,7 @@ export async function sendEmail(mail: any) {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: "smtp.gmail.com",
+    host: 'smtp.gmail.com',
     auth: {
       user: process.env.EMAIL_LOGIN, // generated ethereal user
       pass: process.env.EMAIL_PASSWORD, // generated ethereal password

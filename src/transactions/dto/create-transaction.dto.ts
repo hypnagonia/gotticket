@@ -2,6 +2,4 @@ export class CreateTransactionDto {
   // ticket: number
 }
 
-
-export class CreateTransactionBatchDto {
-}
+export class CreateTransactionBatchDto {}

@@ -8,10 +8,13 @@ import {
   Delete,
   Req,
   Res,
-  Header
+  Header,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { CreateTransactionDto, CreateTransactionBatchDto } from './dto/create-transaction.dto';
+import {
+  CreateTransactionDto,
+  CreateTransactionBatchDto,
+} from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -41,16 +44,21 @@ export class TransactionsController {
     return this.transactionsService.findAll();
   }
 
+  @Get(':tickedId/used')
+  findAllUsedByTickedID(@Param('tickedId') id: string) {
+    return this.transactionsService.findAllUsedByTickedID(+id);
+  }
+
   @Header('Content-Type', 'image/svg+xml')
   @Get('image/:id')
   async findOneImage(@Param('id') id: string, @Res() response: Response) {
     const qr = await this.transactionsService.findOneImage(id);
-    qr.pipe(response)
+    qr.pipe(response);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log('got')
+    console.log('got');
     return this.transactionsService.findOne(id);
   }
 
@@ -60,6 +68,14 @@ export class TransactionsController {
     @Body() updateTransactionDto: UpdateTransactionDto,
   ) {
     return this.transactionsService.update(+id, updateTransactionDto);
+  }
+
+  @Patch(':id/use')
+  useTicket(
+    @Param('id') id: string,
+    @Body() updateTransactionDto: UpdateTransactionDto,
+  ) {
+    return this.transactionsService.useTicket(+id, updateTransactionDto);
   }
 
   @Delete(':id')

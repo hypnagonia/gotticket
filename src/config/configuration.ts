@@ -1,3 +1,3 @@
 export default () => ({
-  frontendURL: process.env.FRONTEND_URL
+  frontendURL: process.env.FRONTEND_URL,
 });

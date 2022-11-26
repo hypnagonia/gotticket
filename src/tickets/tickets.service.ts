@@ -36,6 +36,7 @@ export class TicketsService {
   }
 
   async update(id: number, updateDto: UpdateTicketDto) {
+    // change count only
     await this.repository.update(id, updateDto);
     const o = await this.repository.findOne({ where: { id } });
     if (o) {

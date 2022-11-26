@@ -26,7 +26,7 @@ import { Transaction } from '../../transactions/entities/transaction.entity';
 {
 "count": 100,
 "name": "normal tickets",
-"phone": "+971504252550",
+"price": "1000",
 "event": 3
 }
 
@@ -45,6 +45,9 @@ export class Ticket {
   // how many can be issued
   @Column()
   count: number;
+
+  // @Column()
+  // price: number;
 
   @ManyToOne(() => Event, (event) => event.tickets, { nullable: false })
   event: Event;

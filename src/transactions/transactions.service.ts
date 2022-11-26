@@ -1,15 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto, CreateTransactionBatchDto } from './dto/create-transaction.dto';
+import {
+  CreateTransactionDto,
+  CreateTransactionBatchDto,
+} from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
-import { Transaction } from './entities/transaction.entity';
-import {generate} from '../utils/generate'
+import {
+  Transaction,
+  TransactionTicketStatus,
+} from './entities/transaction.entity';
+import { generate } from '../utils/generate';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as qr from "qr-image"
+import * as qr from 'qr-image';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import {generateTicketNumberEmail, sendEmail} from '../utils/sendEmail'
-
-
+import { generateTicketNumberEmail, sendEmail } from '../utils/sendEmail';
 
 @Injectable()
 export class TransactionsService {
@@ -19,7 +23,6 @@ export class TransactionsService {
 
   async create(createDto: CreateTransactionDto) {
     // get company from session
-
     // @ts-ignore
     /*
     const number = '' + createDto.ticket + generate(0)
@@ -34,34 +37,36 @@ export class TransactionsService {
   }
 
   async createManyAndEmail(createDto: CreateTransactionBatchDto) {
-    console.log({createDto})
+    console.log({ createDto });
     // todo
 
     // @ts-ignore
     if (!createDto || !createDto.emails || !createDto.emails.length) {
-      throw new HttpException('emails should be an array', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'emails should be an array',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
-   // @ts-ignore
-   const emails = createDto.emails
-   const response = []
-   const dto = {...createDto }
+    // @ts-ignore
+    const emails = createDto.emails;
+    const response = [];
+    const dto = { ...createDto };
 
-   // @ts-ignore
-   delete dto.emails
+    // @ts-ignore
+    delete dto.emails;
 
-   for (const email of emails) {
+    for (const email of emails) {
       // @ts-ignore
-      const number = '' + createDto.ticket + generate(0)
+      const number = '' + createDto.ticket + generate(0);
 
-      const o = await this.repository.create({...dto, number});
-
+      const o = await this.repository.create({ ...dto, number });
 
       await this.repository.save(o);
 
       const mail = generateTicketNumberEmail(email, number);
       sendEmail(mail);
-      response.push(o)
+      response.push(o);
     }
 
     return response;
@@ -70,6 +75,15 @@ export class TransactionsService {
   async findAll() {
     // todo remove
     const o = await this.repository.find();
+
+    return o;
+  }
+
+  async findAllUsedByTickedID(ticketId: number) {
+    // todo remove
+    const o = await this.repository.find({
+      where: { status: TransactionTicketStatus.USED, ticket: { id: ticketId } },
+    });
 
     return o;
   }
@@ -84,24 +98,45 @@ export class TransactionsService {
       return code;
     }
 
-
     throw new HttpException('record not found', HttpStatus.NOT_FOUND);
   }
 
+  // by number
   async findOne(id: string) {
-    console.log('got2')
     const o = await this.repository.findOne({ where: { number: id } });
     if (o) {
-      console.log({o})
-      return o
+      console.log({ o });
+      return o;
     }
-
 
     throw new HttpException('record not found', HttpStatus.NOT_FOUND);
   }
 
   update(id: number, updateTransactionDto: UpdateTransactionDto) {
     return `This action updates a #${id} transaction`;
+  }
+
+  async useTicket(id: number, updateTransactionDto: UpdateTransactionDto) {
+    const current = await this.repository.findOne({ where: { id } });
+
+    if (!current) {
+      throw new HttpException('record not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (current.status !== TransactionTicketStatus.ISSUED) {
+      throw new HttpException('already used', HttpStatus.NOT_FOUND);
+    }
+
+    // must be manager of issuer company
+    // status must be Issued
+    const newDto = {
+      status: TransactionTicketStatus.USED,
+    };
+    await this.repository.update(id, newDto);
+    const o = await this.repository.findOne({ where: { id } });
+    if (o) {
+      return o;
+    }
   }
 
   remove(id: number) {
