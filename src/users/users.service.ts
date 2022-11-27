@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -17,12 +17,10 @@ export class UsersService {
     return o;
   }
 
-  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.repository.find();
   }
 
-  @UseGuards(JwtAuthGuard)
   async findOne(id: number) {
     const o = await this.repository.findOne({ where: { id } });
     if (o) {
@@ -32,8 +30,8 @@ export class UsersService {
     throw new HttpException('record not found', HttpStatus.NOT_FOUND);
   }
 
-  async findOneByName(name: string) {
-    const o = await this.repository.findOne({ where: { name } });
+  async findOneByEmail(email: string) {
+    const o = await this.repository.findOne({ where: { email } });
     if (o) {
       return o;
     }

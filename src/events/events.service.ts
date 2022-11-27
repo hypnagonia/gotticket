@@ -32,6 +32,25 @@ export class EventsService {
 
   async findOne(id: number) {
     // anyone
+    //  relations: ['userId', 'offerId'],
+    /*
+    ...findOne({
+    select: {
+        id: true,
+        createdAt: true,
+        userId: {
+          id: true,
+          name: true,
+        },
+        offerId: {
+          id: true,
+          offerDrescription: true,
+        },
+      },
+      ...
+      where: {...},
+})
+    */
     const o = await this.repository.findOne({ where: { id } });
     if (o) {
       return o;
