@@ -20,7 +20,7 @@ import {
 import { Company } from '../../companies/entities/company.entity';
 import { Event } from '../../events/entities/event.entity';
 import { Transaction } from '../../transactions/entities/transaction.entity';
-import { Role } from '../../auth/roles'
+import { Role } from '../../auth/roles';
 /*
 
 {

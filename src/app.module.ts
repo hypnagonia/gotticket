@@ -11,7 +11,8 @@ import { TicketsModule } from './tickets/tickets.module';
 import { EventsModule } from './events/events.module';
 import { TicketreturnsModule } from './ticketreturns/ticketreturns.module';
 import { TransactionsModule } from './transactions/transactions.module';
-import {AuthModule} from './auth/auth.module'
+import { AuthModule } from './auth/auth.module';
+import { RolesGuard } from './auth/roles.guard';
 
 @Module({
   imports: [
@@ -40,9 +41,12 @@ import {AuthModule} from './auth/auth.module'
     EventsModule,
     TicketreturnsModule,
     TransactionsModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // RolesGuard
+  ],
 })
 export class AppModule {}

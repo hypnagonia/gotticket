@@ -61,6 +61,9 @@ export class Transaction {
   @ManyToOne(() => User, (user) => user.transactions)
   user: User;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.transactions, { nullable: false, eager: true })
+  @ManyToOne(() => Ticket, (ticket) => ticket.transactions, {
+    nullable: false,
+    eager: true,
+  })
   ticket: Ticket;
 }

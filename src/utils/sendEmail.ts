@@ -13,11 +13,12 @@ export const generateTicketNumberEmail = (email: string, number: string) => {
     ${url}/transactions/image/${number}
     `, // html body
     attachments: [
-        {   // file on disk as an attachment
-            filename: 'QR-code.png',
-            path: `${url}/transactions/image/${number}/png` // stream this file
-        }
-      ]
+      {
+        // file on disk as an attachment
+        filename: 'QR-code.png',
+        path: `${url}/transactions/image/${number}/png`, // stream this file
+      },
+    ],
   };
 
   return mail;

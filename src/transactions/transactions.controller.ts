@@ -9,6 +9,7 @@ import {
   Req,
   Res,
   Header,
+  UseGuards,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import {
@@ -18,10 +19,15 @@ import {
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Role } from '../auth/roles';
+
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
+  // @UseGuards(JwtAuthGuard, RolesGuard([Role.COMPANY])) or api
   @Post()
   create(@Body() createTransactionDto: CreateTransactionDto) {
     return this.transactionsService.create(createTransactionDto);
@@ -34,11 +40,13 @@ export class TransactionsController {
 }
   */
 
+  @UseGuards(JwtAuthGuard, RolesGuard([Role.COMPANY]))
   @Post('batch')
   createManyAndEmail(@Body() createDto: CreateTransactionBatchDto) {
     return this.transactionsService.createManyAndEmail(createDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard([Role.SCANNER]))
   @Get()
   findAll() {
     return this.transactionsService.findAll();
@@ -63,11 +71,14 @@ export class TransactionsController {
     qr.pipe(response);
   }
 
+  // todo not id but number
+  // @UseGuards(JwtAuthGuard, RolesGuard([Role.ADMIN]))
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.transactionsService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard([Role.ADMIN]))
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -76,6 +87,7 @@ export class TransactionsController {
     return this.transactionsService.update(+id, updateTransactionDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard([Role.SCANNER]))
   @Patch(':id/use')
   useTicket(
     @Param('id') id: string,
@@ -84,8 +96,9 @@ export class TransactionsController {
     return this.transactionsService.useTicket(+id, updateTransactionDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard([Role.ADMIN]))
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.transactionsService.remove(+id);
+    // return this.transactionsService.remove(+id);
   }
 }
