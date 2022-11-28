@@ -36,7 +36,7 @@ export class TransactionsController {
   /*
   {
 "ticket": 1,
-"emails": ["hypnagonia@gmail.com"]
+"emails": ["hgonia@gmail.com"]
 }
   */
 

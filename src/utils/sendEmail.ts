@@ -1,9 +1,12 @@
 const nodemailer = require('nodemailer');
 
+
+// todo try catch
+// todo logger if failed
 export const generateTicketNumberEmail = (email: string, number: string) => {
   const url = process.env.BACKEND_URL;
   const mail = {
-    from: 'jenya.nepoimannykh@gmail.com', // sender address
+    from: process.env.EMAIL_LOGIN, // sender address
     to: email, // list of receivers
     subject: 'Your Ticket From Gotticket', // Subject line
     text: `Your Ticket Number is ${number}`, // plain text body
@@ -32,8 +35,8 @@ export async function sendEmail(mail: any) {
 
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
+    service: process.env.EMAIL_SERVER_NAME,
+    host: process.env.EMAIL_SERVER_SMTP,
     auth: {
       user: process.env.EMAIL_LOGIN, // generated ethereal user
       pass: process.env.EMAIL_PASSWORD, // generated ethereal password
@@ -42,6 +45,7 @@ export async function sendEmail(mail: any) {
 
   // send mail with defined transport object
   const info = await transporter.sendMail(mail);
+  console.log({info})
   // console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
